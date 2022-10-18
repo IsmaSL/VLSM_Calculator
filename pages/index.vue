@@ -4,9 +4,9 @@
     <main class="container">
         <Form></Form>
     </main>
-    <footer class="p-3 text-center">
+    <!-- <footer class="p-3 text-center">
         ISL @ 2022
-    </footer>
+    </footer> -->
 </div>
 </template>
 

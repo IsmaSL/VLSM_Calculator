@@ -80,6 +80,10 @@
                     <li>Error al calcular subnets WAN.</li>
                     <li>Error al introducir algunos valores.</li>
                     <li>Errores de validación.</li>
+                    <hr>
+                    <li>Si necesita borrar un subnet, refrescar la página.</li>
+                    <li>Sólo se permiten hasta 12 subnets.</li>
+                    <li>Si genera resultados inesperados, refrescar la página.</li>
                 </div>
                 <div class="card-footer">
                     <span>Se está trabajando en los errores comentados anteriormente, diculpe las molestias.</span>
