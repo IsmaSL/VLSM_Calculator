@@ -159,7 +159,7 @@
                         </div>
                         <hr>
                         <!-- WANs -->
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center" v-if="forms.inWan">
                             <div class="text-center">
                                 <h5 class="text-primary">Redes WAN</h5>
                             </div>
@@ -176,7 +176,7 @@
                                             </tr>
                                         </thead>
                                         <tbody class="table-group-divider text-center">
-                                            <tr v-for="(w, key) in resultsWans" :key="key">
+                                            <tr v-for="(w, key2) in resultsWans" :key="key2">
                                                 <td>{{ w.i }}</td>
                                                 <td>{{ w.r }}</td>
                                                 <td>{{ w.p }}</td>
@@ -199,7 +199,7 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue';
 import HeaderVue from '~/components/Header.vue';
 import Form from '~/components/Form.vue';
@@ -247,23 +247,23 @@ export default Vue.extend({
         this.initial();
     },
     methods: {
-        resetSubredes() :void {
+        resetSubredes() {
             this.subn = {
                 nSub: 3||null,
                 nSubMax: 12
             }
         },
-        initial(): void {
-            var f1: any = document.getElementById("form1");
+        initial() {
+            var f1 = document.getElementById("form1");
             f1.style.display = "block";
-            var f2: any = document.getElementById("form2");
+            var f2 = document.getElementById("form2");
             f2.style.display = "none";
-            var wn: any = document.getElementById("wans");
+            var wn = document.getElementById("wans");
             wn.style.display = "none";
-            var tb: any = document.getElementById("results")
+            var tb = document.getElementById("results")
             tb.style.display = "none"
         },
-        validate(index: number): void {
+        validate(index) {
             if( index === 1) {
                 if (this.net.oct1 === 0 || this.net.oct1 === null || this.net.oct1 > 255 ||
                     this.net.oct2 === 0 || this.net.oct2 === null || this.net.oct2 > 255 ||
@@ -279,9 +279,9 @@ export default Vue.extend({
                     }
                 }
             } else if (index === 2) {
-                var hostList: any = document.querySelectorAll("input[name=\"host[]\"]");
+                var hostList = document.querySelectorAll("input[name=\"host[]\"]");
                 var band = false;
-                hostList.forEach((host: any) => {
+                hostList.forEach((host) => {
                     if (host.value === "" || host.value === null || host.value === 0) {
                         band = true;
                     }
@@ -294,7 +294,7 @@ export default Vue.extend({
                 }
             }
         },
-        ocultarForm(index: number): void {
+        ocultarForm(index) {
             if( index === 1) {
                 // Muestra el segundo formulario
                 this.forms.form1 = true;
@@ -312,13 +312,13 @@ export default Vue.extend({
                 this.forms.table = false;
             }
 
-            var f1: any = document.getElementById("form1");
-            var f2: any = document.getElementById("form2");
-            var f3: any = document.getElementById("results");
+            var f1 = document.getElementById("form1");
+            var f2 = document.getElementById("form2");
+            var f3 = document.getElementById("results");
 
             if(this.subn.nSub <= this.subn.nSubMax) {
-                this.addRows();
                 if (index === 1) {
+                    this.addRows();
                     setTimeout(function () {
                         f1.style.display = "none";
                         f2.style.display = "block";
@@ -340,28 +340,30 @@ export default Vue.extend({
             }
 
             if (index === 3) {
-                this.calculate();
+                
                 setTimeout(function () {
                     f1.style.display = "none";
                     f2.style.display = "none"
                     f3.style.display = "block"
                 }, 800);
+
+                this.calculate();
             }
 
         },
-        showInputWans(): void {
+        showInputWans() {
             this.forms.inWan = !this.forms.inWan;
-            var w: any = document.getElementById("wans");
+            var w = document.getElementById("wans");
             if (this.forms.inWan) {
                 w.style.display = "block";
             } else {
                 w.style.display = "none"
             }
         },
-        addRows(): void {
+        addRows() {
             for (var i = 1; i <= this.subn.nSub; i++) {
-                let con: any = document.getElementById("subnetlist");
-                let div: any = document.createElement("div");
+                let con = document.getElementById("subnetlist");
+                let div = document.createElement("div");
                 div.classList.add("row", "px-3", "mt-3", "align-items-center");
                 div.innerHTML = "<div class=\"col-7\">\
                                     <span class=\"form-control text-info\"> Subnet " + i + "</span>\
@@ -372,28 +374,28 @@ export default Vue.extend({
                 con.appendChild(div);
             }
         },
-        deleteRows(): void {
-            let con: any = document.getElementById("subnetlist");
+        deleteRows() {
+            let con = document.getElementById("subnetlist");
             while (con.firstChild) {
                 con.removeChild(con.firstChild);
             }
         },
         calculate() {
-            var hostList: any = document.querySelectorAll("input[name=\"host[]\"]");
-            var hosts: number = 0;
-            var cont: number = 1;
-            var main: string = "";
+            var hostList = document.querySelectorAll("input[name=\"host[]\"]");
+            var hosts = 0;
+            var cont = 1;
+            var main = "";
 
             main = "RP => " + this.net.oct1 + "." + this.net.oct2 + "." + this.net.oct3 + "." + this.net.oct4;
             console.log(main);
             
-            hostList.forEach((host: any) => {
-                var subr: string = "";
-                var prim: string = "";
-                var ulti: string = "";
-                var gate: string = "";
-                var broa: string = "";
-                var o1, o2, o3, o4: number;
+            hostList.forEach((host ) => {
+                var subr = "";
+                var prim = "";
+                var ulti = "";
+                var gate = "";
+                var broa = "";
+                var o1, o2, o3, o4;
                 let band = false;
                 let i = 2;
                 // Calcula los hosts que se ajustan
@@ -489,20 +491,21 @@ export default Vue.extend({
                 cont++; 
             });
 
-            if(this.forms.inWan === true)
+            if(this.forms.inWan) {
                 this.calculateWans();
+            }
             // console.log(this.results);
         },
-        calculateWans(): void {
+        calculateWans() {
             console.log("Hola: " + this.wans.nWan);
-            var hosts: number = 0;
+            var hosts = 0;
             console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<");
             for(var i=1;i<=this.wans.nWan;i++) {
-                var subr: string = "";
-                var prim: string = "";
-                var ulti: string = "";
-                var broa: string = "";
-                var o1, o2, o3, o4: number;
+                var subr = "";
+                var prim = "";
+                var ulti = "";
+                var broa = "";
+                var o1, o2, o3, o4;
                 let band = false;
                 // Calcular Principal
                 this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
