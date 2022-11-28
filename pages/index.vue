@@ -1,7 +1,7 @@
 <template>
     <div>
         <HeaderVue></HeaderVue>
-        <main class="container">
+        <main class="container mb-5" style="position: relative;">
             <div class="row mt-5 justify-content-center">
                 <!-- Primer Formulario -->
                 <div class="col-xl-4 col-lg-5 col-md-7 col-sm-8 col-xs-10 mb-3 form-show" id="form1"
@@ -126,7 +126,7 @@
                         </div>
                         <hr>
                         <div class="row justify-content-center">
-                            <button class="btn btn-primary">Calcular Nueva Red</button>
+                            <button class="btn btn-primary" @click="reload()">Calcular Nueva Red</button>
                         </div>
                         <hr>
                         <!-- LANs -->
@@ -197,7 +197,7 @@
             </div>
             <!-- <Form></Form> -->
         </main>
-        <footer class="bg-light text-center text-lg-start">
+        <footer class="bg-light text-center text-lg-start" style="position: fixed; bottom: 0;">
             <div class="text-center bg-dark p-2">
                 <small>
                     © 2022 Copyright:
@@ -304,7 +304,18 @@ export default Vue.extend({
                 if (band) {
                     alert("Faltan datos");
                 } else {
-                    this.ocultarForm(3);
+                    var band2 = false;
+                    hostList.forEach((host) => {
+                        if (host.value < 3 ) {
+                            band2 = true;
+                        } 
+                    });
+                    
+                    if(band2) {
+                        alert("No se pueden calcular subredes <= 2 Hosts");
+                    } else {
+                        this.ocultarForm(3);
+                    }
                 }
             }
         },
@@ -442,7 +453,6 @@ export default Vue.extend({
                     if( (hosts % 255) === 1) {
                         this.auxNet.oct4 = (hosts % 255) + 1;
                     }
-                    
                 }else {
                     this.auxNet.oct3 = Number(this.net.oct3);
                     this.auxNet.oct4 = Number(this.net.oct4) + 1;
@@ -520,9 +530,22 @@ export default Vue.extend({
                 var ulti = "";
                 var broa = "";
                 var o1, o2, o3, o4;
-                let band = false;
+
                 // Calcular Principal
-                this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                this.auxNet.oct1 = Number(this.auxNet.oct1);
+                this.auxNet.oct2 = Number(this.auxNet.oct2);
+                if((this.auxNet.oct4 + 1) > 255) {
+                    if(((this.auxNet.oct4 + 1) % 255) === 1) {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3) + 1;
+                        this.auxNet.oct4 = 0;
+                    } else {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3);
+                        this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                    }
+                }else {
+                    this.auxNet.oct3 = Number(this.auxNet.oct3);
+                    this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                }
                 subr = this.auxNet.oct1 + "." + this.auxNet.oct2 + "." + this.auxNet.oct3 + "." + this.auxNet.oct4 + "/" + 30;
                 // console.log("R => " + this.auxNet.oct1 + "." + this.auxNet.oct2 + "." + this.auxNet.oct3 + "." + this.auxNet.oct4 + "/" + 30);
 
@@ -530,9 +553,12 @@ export default Vue.extend({
                 this.auxNet.oct1 = Number(this.auxNet.oct1);
                 this.auxNet.oct2 = Number(this.auxNet.oct2);
                 if((this.auxNet.oct4 + 1) > 255) {
-                    this.auxNet.oct3 = Number(this.auxNet.oct3) + 1;
-                    if( (hosts % 255) === 1) {
-                        this.auxNet.oct4 = (hosts % 255) + 1;
+                    if(((this.auxNet.oct4 + 1) % 255) === 1) {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3) + 1;
+                        this.auxNet.oct4 = 0;
+                    } else {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3);
+                        this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
                     }
                 }else {
                     this.auxNet.oct3 = Number(this.auxNet.oct3);
@@ -546,21 +572,38 @@ export default Vue.extend({
                 o4 = this.auxNet.oct4;
                 this.auxNet.oct1 = Number(this.auxNet.oct1);
                 this.auxNet.oct2 = Number(this.auxNet.oct2);
-                if((o4 + 1) <= 255) {
+                if((this.auxNet.oct4 + 1) > 255) {
+                    if(((this.auxNet.oct4 + 1) % 255) === 1) {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3) + 1;
+                        this.auxNet.oct4 = 0;
+                    } else {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3);
+                        this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                    }
+                }else {
                     this.auxNet.oct3 = Number(this.auxNet.oct3);
-                    this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
-                } else {
-                    this.auxNet.oct3 = Number(this.auxNet.oct3) + Math.floor(hosts / 255);
                     this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
                 }
                 ulti = this.auxNet.oct1 + "." + this.auxNet.oct2 + "." + this.auxNet.oct3 + "." + this.auxNet.oct4;
                 // console.log("U => " + this.auxNet.oct1 + "." + this.auxNet.oct2 + "." + this.auxNet.oct3 + "." + this.auxNet.oct4);
 
                 // Calcular Broadcast
+                o3 = this.auxNet.oct3;
+                o4 = this.auxNet.oct4;
                 this.auxNet.oct1 = Number(this.auxNet.oct1);
                 this.auxNet.oct2 = Number(this.auxNet.oct2);
-                this.auxNet.oct3 = Number(this.auxNet.oct3);
-                this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                if((this.auxNet.oct4 + 1) > 255) {
+                    if(((this.auxNet.oct4 + 1) % 255) === 1) {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3) + 1;
+                        this.auxNet.oct4 = 0;
+                    } else {
+                        this.auxNet.oct3 = Number(this.auxNet.oct3);
+                        this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                    }
+                }else {
+                    this.auxNet.oct3 = Number(this.auxNet.oct3);
+                    this.auxNet.oct4 = Number(this.auxNet.oct4) + 1;
+                }
                 broa = this.auxNet.oct1 + "." + this.auxNet.oct2 + "." + this.auxNet.oct3 + "." + this.auxNet.oct4;
                 // console.log("B => " + this.auxNet.oct1 + "." + this.auxNet.oct2 + "." + this.auxNet.oct3 + "." + this.auxNet.oct4);
                 // console.log("---------------------------");
@@ -572,18 +615,10 @@ export default Vue.extend({
                     u: ulti,
                     b: broa
                 });
-
-                // Deja lista la nueva Subed
-                this.net.oct1 = this.auxNet.oct1;
-                this.net.oct2 = this.auxNet.oct2;
-                if((Number(this.auxNet.oct4) + 1) > 255) {
-                    this.net.oct3 = Number(this.auxNet.oct3) + 1;
-                    this.net.oct4 = 0;
-                } else {
-                    this.net.oct3 = this.auxNet.oct3;
-                    this.net.oct4 = this.auxNet.oct4 + 1;
-                }
             }
+        },
+        reload() {
+            location.reload();
         }
     }
 })
