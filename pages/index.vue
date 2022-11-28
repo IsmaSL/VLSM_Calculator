@@ -125,6 +125,10 @@
                             <h4>Calculadora VLSM</h4>
                         </div>
                         <hr>
+                        <div class="row justify-content-center">
+                            <button class="btn btn-primary">Calcular Nueva Red</button>
+                        </div>
+                        <hr>
                         <!-- LANs -->
                         <div class="row justify-content-center">
                             <div class="text-center">
@@ -157,7 +161,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <hr  v-if="forms.inWan">
                         <!-- WANs -->
                         <div class="row justify-content-center" v-if="forms.inWan">
                             <div class="text-center">
@@ -193,6 +197,14 @@
             </div>
             <!-- <Form></Form> -->
         </main>
+        <footer class="bg-light text-center text-lg-start">
+            <div class="text-center bg-dark p-3">
+                © 2022 Copyright:
+                <a class="text-dark" href="https://mdbootstrap.com/">
+                    <span class="text-white">Ismael SL</span>
+                </a>
+            </div>
+        </footer>
         <!-- <footer class="p-3 text-center">
         ISL @ 2022
     </footer> -->
