@@ -198,7 +198,7 @@
             <!-- <Form></Form> -->
         </main>
         <footer class="bg-light text-center text-lg-start">
-            <div class="text-center bg-dark p-3">
+            <div class="text-center bg-dark p-2">
                 © 2022 Copyright:
                 <a class="text-dark" href="https://mdbootstrap.com/">
                     <span class="text-white">Ismael SL</span>
