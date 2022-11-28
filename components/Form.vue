@@ -3,7 +3,7 @@
         <div class="col-lg-4 col-md-6 col-sm-7 col-xs-4 mb-3">
             <div class="p-4 card shadow rounded">
                 <form onsubmit="return false;">
-                <!-- Network -->
+                    <!-- Network -->
                     <div class="row">
                         <div class="col-12">
                             <h5 class="text-dark mb-3">Network</h5>
@@ -103,18 +103,18 @@ import Results from '../components/Results.vue';
 export default Vue.extend({
     name: "Form",
     components: {
-    Results,
-},
+        Results,
+    },
     data() {
         return {
             net: {
-                oct1: 192,
-                oct2: 168,
-                oct3: 1,
-                oct4: 0
+                oct1: null,
+                oct2: null,
+                oct3: null,
+                oct4: null
             },
             rows: {
-                numCampMax: 13,
+                numCampMax: 30,
                 x: 2
             },
             newNet: {
@@ -137,10 +137,10 @@ export default Vue.extend({
     methods: {
         resetData(){
             this.net = {
-                oct1: 192,
-                oct2: 168,
-                oct3: 1,
-                oct4: 0
+                oct1: null,
+                oct2: null,
+                oct3: null,
+                oct4: null
             };
             this.newNet = {
                 oct1: 0,
@@ -206,15 +206,15 @@ export default Vue.extend({
                 this.newNet.mask = 32 - i;
                 // Calcula red
                 if (hosts > 255) {
-                    this.newNet.oct1 = this.net.oct1;
-                    this.newNet.oct2 = this.net.oct2;
-                    this.newNet.oct3 = this.net.oct3 + Math.floor(hosts / 255);
-                    this.newNet.oct4 = this.net.oct4 + hosts % 255;
+                    this.newNet.oct1 = Number(this.net.oct1);
+                    this.newNet.oct2 = Number(this.net.oct2);
+                    this.newNet.oct3 = Number(this.net.oct3) + Math.floor(hosts / 255);
+                    this.newNet.oct4 = Number(this.net.oct4) + hosts % 255;
                 } else {
-                    this.newNet.oct1 = this.net.oct1;
-                    this.newNet.oct2 = this.net.oct2;
-                    this.newNet.oct3 = this.net.oct3 + Math.floor(hosts / 255);
-                    this.newNet.oct4 = this.net.oct4 + hosts;
+                    this.newNet.oct1 = Number(this.net.oct1);
+                    this.newNet.oct2 = Number(this.net.oct2);
+                    this.newNet.oct3 = Number(this.net.oct3) + Math.floor(hosts / 255);
+                    this.newNet.oct4 = Number(this.net.oct4) + hosts;
                 }
                 // Llama al método para generar las subnets
                 this.getSubnets(cont);
@@ -227,10 +227,10 @@ export default Vue.extend({
         },
         getSubnets(item) {
             let netw = (this.net.oct1) + "." + (this.net.oct2) + "." + (this.net.oct3) + "." + (this.net.oct4) + "/" + this.newNet.mask;
-            let firs = (this.net.oct1) + "." + (this.net.oct2) + "." + (this.net.oct3) + "." + (this.net.oct4 + 1);
-            let last = (this.newNet.oct1) + "." + (this.newNet.oct2) + "." + (this.newNet.oct3) + "." + (this.newNet.oct4 - 3);
-            let gatw = (this.newNet.oct1) + "." + (this.newNet.oct2) + "." + (this.newNet.oct3) + "." + (this.newNet.oct4 - 2);
-            let brct = (this.newNet.oct1) + "." + (this.newNet.oct2) + "." + (this.newNet.oct3) + "." + (this.newNet.oct4 - 1);
+            let firs = (this.net.oct1) + "." + (this.net.oct2) + "." + (this.net.oct3) + "." + Number(this.net.oct4 + 1);
+            let last = (this.newNet.oct1) + "." + (this.newNet.oct2) + "." + (this.newNet.oct3) + "." + Number(this.newNet.oct4 - 3);
+            let gatw = (this.newNet.oct1) + "." + (this.newNet.oct2) + "." + (this.newNet.oct3) + "." + Number(this.newNet.oct4 - 2);
+            let brct = (this.newNet.oct1) + "." + (this.newNet.oct2) + "." + (this.newNet.oct3) + "." + Number(this.newNet.oct4 - 1);
             let col = '';
                 col = this.getColor();
 

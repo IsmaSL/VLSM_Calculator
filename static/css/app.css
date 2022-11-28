@@ -10,3 +10,15 @@ footer {
     width: 100%;
     color: white;
 }
+
+.form-show {
+    transition: 0.8s;
+    overflow: hidden;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+    display: block;
+}
+
+.form-hidde {
+    opacity: 0;
+}
